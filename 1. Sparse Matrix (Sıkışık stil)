@@ -1,0 +1,31 @@
+//1. Sparse Matrix (Sıkışık stil)
+#include <stdio.h>
+
+typedef struct {
+    int satir, sutun, deger;
+} Terim;
+
+int main()
+{
+    int matris[4][5] = {{0,0,3,0,4},{0,0,5,7,0},{0,0,0,0,0},{0,2,6,0,0}};
+    Terim list[20];
+    int k=0;
+
+    for(int i=0;i<4;i++) {
+        for(int j=0;j<5;j++){
+            if(matris[i][j]!=0)
+            {
+                list[k].satir=i;
+                list[k].sutun=j;
+                list[k].deger=matris[i][j];
+                k++;
+            }
+        }
+    }
+
+    printf("R\tC\tV\n");
+    for(int i=0; i<k; i++)
+        printf("%d\t%d\t%d\n", list[i].satir, list[i].sutun, list[i].deger);
+
+    return 0;
+}
