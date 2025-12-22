@@ -1,4 +1,4 @@
-//4. Max Heap / Min Heap kodu
+//4. Max Min Heap kodu
 #include <stdio.h>
 #include <stdlib.h>
 
