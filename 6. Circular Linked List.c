@@ -2,24 +2,90 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node { int data; struct Node* next; };
+typedef struct Node {
+    int v;
+    struct Node *next;
+} Node;
 
-int main() {
-    struct Node* n1 = (struct Node*)malloc(sizeof(struct Node));
-    struct Node* n2 = (struct Node*)malloc(sizeof(struct Node));
-    struct Node* n3 = (struct Node*)malloc(sizeof(struct Node));
+Node* circ_push_back(Node *tail, int v);
+Node* circ_insert_after(Node *tail, int key, int v);
+Node* circ_delete(Node *tail, int key);
+void circ_print(Node *tail);
+void circ_free(Node *tail);
 
-    n1->data=5; n1->next=n2;
-    n2->data=10; n2->next=n3;
-    n3->data=15; n3->next=n1; 
-
-    struct Node* temp = n1;
-    int i=0;
-    do {
-        printf("%d -> ", temp->data);
-        temp = temp->next;
-        i++;
-    } while(temp!=n1 && i<6);
-    
+int main(void){
+    Node *tail=NULL;
+    tail=circ_push_back(tail,1);
+    tail=circ_push_back(tail,3);
+    tail=circ_insert_after(tail,1,2);
+    circ_print(tail);
+    tail=circ_delete(tail,2);
+    circ_print(tail);
+    circ_free(tail);
     return 0;
+}
+
+Node* circ_push_back(Node *tail, int v){
+    Node *n=(Node*)malloc(sizeof(Node));
+    n->v=v;
+    if(!tail){
+        n->next=n;
+        return n;
+    }
+    n->next=tail->next;
+    tail->next=n;
+    return n;
+}
+
+Node* circ_insert_after(Node *tail, int key, int v){
+    if(!tail) return NULL;
+    Node *cur=tail->next;
+    do{
+        if(cur->v==key){
+            Node *n=(Node*)malloc(sizeof(Node));
+            n->v=v;
+            n->next=cur->next;
+            cur->next=n;
+            if(cur==tail) tail=n;
+            break;
+        }
+        cur=cur->next;
+    }while(cur!=tail->next);
+    return tail;
+}
+
+Node* circ_delete(Node *tail, int key){
+    if(!tail) return NULL;
+    Node *prev=tail, *cur=tail->next;
+    do{
+        if(cur->v==key){
+            if(cur==prev){
+                free(cur);
+                return NULL;
+            }
+            prev->next=cur->next;
+            if(cur==tail) tail=prev;
+            free(cur);
+            return tail;
+        }
+        prev=cur; cur=cur->next;
+    }while(cur!=tail->next);
+    return tail;
+}
+
+void circ_print(Node *tail){
+    if(!tail){ printf("(bos)\n"); return; }
+    Node *cur=tail->next;
+    do{
+        printf("%d ", cur->v);
+        cur=cur->next;
+    }while(cur!=tail->next);
+    printf("\n");
+}
+
+void circ_free(Node *tail){
+    if(!tail) return;
+    Node *head=tail->next;
+    tail->next=NULL;
+    while(head){ Node *n=head->next; free(head); head=n; }
 }
