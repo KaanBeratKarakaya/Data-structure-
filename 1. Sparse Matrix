@@ -1,4 +1,4 @@
-//1. Sparse Matrix (Sıkışık stil)
+//1. Sparse Matrix
 #include <stdio.h>
 
 typedef struct {
